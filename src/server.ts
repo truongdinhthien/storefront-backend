@@ -1,15 +1,29 @@
-import express, { Request, Response } from 'express';
+import express, { Router } from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import morgan from 'morgan';
+import CONFIG from './common/config';
+import userRouter from './modules/user/user.route';
+import orderRouter from './modules/order/order.route';
+import productRouter from './modules/product/product.route';
 
 const app: express.Application = express();
-const address: string = '0.0.0.0:3000';
+const appRouter = Router();
 
+// Common Middleware
 app.use(bodyParser.json());
+app.use(cors());
+app.use(morgan('tiny'));
 
-app.get('/', function (req: Request, res: Response) {
-  res.send('Hello World!');
-});
+// App router
+appRouter.use(userRouter);
+appRouter.use(orderRouter);
+appRouter.use(productRouter);
 
-app.listen(3000, function () {
+app.use('/api', appRouter);
+
+// App listen
+const address: string = `0.0.0.0:${CONFIG.PORT}`;
+app.listen(CONFIG.PORT, function () {
   console.log(`Starting app on: ${address}`);
 });
