@@ -5,9 +5,10 @@
   "main": "server.ts",
   "scripts": {
     "start": "node src/server.ts",
-    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
+    "watch": "tsc-watch --onSuccess \"node ./dist/server.js\"",
     "test": "jasmine-ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "migration": "db-migrate"
   },
   "author": "Udacity",
   "license": "ISC",
@@ -28,6 +29,8 @@
     "@types/pg": "^7.14.7",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
+    "db-migrate": "^0.11.14",
+    "db-migrate-pg": "^1.5.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
