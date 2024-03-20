@@ -8,6 +8,7 @@ export type ApiErrorResponse = {
   success: false;
   message: string;
   data?: null;
+  detail?: Array<Record<string, unknown>>;
 };
 
 export const success = <T>(

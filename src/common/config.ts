@@ -8,6 +8,9 @@ type Config = {
 
   PORT: number;
 
+  PASSWORD_HASH_SALT_ROUNDS: number;
+  PASSWORD_HASH_SUFFIX: string;
+
   DB_USER: string;
   DB_HOST: string;
   DB_NAME: string;
@@ -27,6 +30,11 @@ const CONFIG = {
   NODE_ENV: (process.env.NODE_ENV || 'development').trim(),
 
   PORT: Number(process.env.PORT || 5500),
+
+  PASSWORD_HASH_SALT_ROUNDS: Number(
+    process.env.PASSWORD_HASH_SALT_ROUNDS || 10,
+  ),
+  PASSWORD_HASH_SUFFIX: process.env.PASSWORD_HASH_SUFFIX?.trim(),
 
   DB_USER: process.env.DB_USER?.trim(),
   DB_HOST: process.env.DB_HOST?.trim(),
