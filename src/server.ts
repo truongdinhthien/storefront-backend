@@ -10,6 +10,7 @@ import {
   errorMiddleware,
   notFoundMiddleware,
 } from './common/middlewares/error.middleware';
+import authRouter from './modules/auth/auth.route';
 
 const app: express.Application = express();
 
@@ -20,6 +21,7 @@ app.use(morgan('tiny'));
 
 // App router
 const appRouter = Router();
+appRouter.use(authRouter);
 appRouter.use(userRouter);
 appRouter.use(orderRouter);
 appRouter.use(productRouter);

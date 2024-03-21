@@ -1,7 +1,7 @@
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   email VARCHAR(50) UNIQUE NOT NULL,
-  firstName VARCHAR(255) NOT NULL,
-  lastName VARCHAR(255) NOT NULL,
-  hashedPassword VARCHAR(255) NOT NULL
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  hashed_password VARCHAR(255) NOT NULL
 );

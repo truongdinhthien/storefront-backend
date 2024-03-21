@@ -1,7 +1,11 @@
 import { Response, Request, NextFunction } from 'express';
 import { success } from '../../common/utils/response';
 import UserModel from './user.model';
-import { HttpNotFoundException } from '../../common/exceptions';
+import {
+  HttpForbiddenException,
+  HttpNotFoundException,
+} from '../../common/exceptions';
+import httpStatus from 'http-status';
 
 const userModel = new UserModel();
 
@@ -23,20 +27,20 @@ class UserController {
   async getUser(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await userModel.getAll();
-      return res.status(200).json(success(result));
+      return res.status(httpStatus.OK).json(success(result));
     } catch (error) {
       next(error);
     }
   }
 
   getUserById(req: Request, res: Response) {
-    return res.status(200).json(success(req.user));
+    return res.status(httpStatus.OK).json(success(req.user));
   }
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await userModel.create(req.body);
-      return res.json(success(result));
+      return res.status(httpStatus.CREATED).json(success(result));
     } catch (error) {
       next(error);
     }
@@ -45,7 +49,7 @@ class UserController {
   async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await userModel.delete(Number(req.params.userId));
-      return res.json(success(result));
+      return res.status(httpStatus.OK).json(success(result));
     } catch (error) {
       next(error);
     }
@@ -53,11 +57,13 @@ class UserController {
 
   async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await userModel.update(
-        Number(req.params.userId),
-        req.body,
-      );
-      return res.json(success(result));
+      const userId = Number(req.params.userId);
+      const authorId = req.author.id;
+      if (authorId !== userId) {
+        return next(new HttpForbiddenException('No permission'));
+      }
+      const result = await userModel.update(userId, req.body);
+      return res.status(httpStatus.OK).json(success(result));
     } catch (error) {
       next(error);
     }

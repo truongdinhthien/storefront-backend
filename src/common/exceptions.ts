@@ -1,3 +1,5 @@
+import httpStatus from 'http-status';
+
 export class ApiException extends Error {
   status: number;
   constructor(message: string, status: number) {
@@ -9,12 +11,24 @@ export class ApiException extends Error {
 
 export class HttpNotFoundException extends ApiException {
   constructor(message: string) {
-    super(message, 404);
+    super(message, httpStatus.NOT_FOUND);
   }
 }
 
 export class HttpBadRequestException extends ApiException {
   constructor(message: string) {
-    super(message, 400);
+    super(message, httpStatus.BAD_REQUEST);
+  }
+}
+
+export class HttpUnauthorizedException extends ApiException {
+  constructor(message: string) {
+    super(message, httpStatus.UNAUTHORIZED);
+  }
+}
+
+export class HttpForbiddenException extends ApiException {
+  constructor(message: string) {
+    super(message, httpStatus.FORBIDDEN);
   }
 }

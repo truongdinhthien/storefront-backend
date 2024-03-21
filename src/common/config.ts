@@ -11,6 +11,8 @@ type Config = {
   PASSWORD_HASH_SALT_ROUNDS: number;
   PASSWORD_HASH_SUFFIX: string;
 
+  SECRET_KEY: string;
+
   DB_USER: string;
   DB_HOST: string;
   DB_NAME: string;
@@ -35,6 +37,8 @@ const CONFIG = {
     process.env.PASSWORD_HASH_SALT_ROUNDS || 10,
   ),
   PASSWORD_HASH_SUFFIX: process.env.PASSWORD_HASH_SUFFIX?.trim(),
+
+  SECRET_KEY: process.env.SECRET_KEY?.trim(),
 
   DB_USER: process.env.DB_USER?.trim(),
   DB_HOST: process.env.DB_HOST?.trim(),
