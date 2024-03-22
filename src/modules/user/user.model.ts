@@ -99,7 +99,6 @@ class UserModel {
       'UPDATE users SET first_name = $1, last_name = $2 WHERE id = $3 RETURNING *',
       [firstName, lastName, id],
     );
-    console.log(result);
     return transformUser(result[0]);
   }
 
