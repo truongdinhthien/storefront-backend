@@ -26,21 +26,26 @@ export const loadUser = async (
 class UserController {
   async getUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await userModel.getAll();
-      return res.status(httpStatus.OK).json(success(result));
+      const users = await userModel.getAll();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const data = users.map(({ hashedPassword, ...info }) => info);
+      return res.status(httpStatus.OK).json(success(data));
     } catch (error) {
       next(error);
     }
   }
 
   getUserById(req: Request, res: Response) {
-    return res.status(httpStatus.OK).json(success(req.user));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { hashedPassword, ...user } = req.user!;
+    return res.status(httpStatus.OK).json(success(user));
   }
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await userModel.create(req.body);
-      return res.status(httpStatus.CREATED).json(success(result));
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { hashedPassword, ...user } = await userModel.create(req.body);
+      return res.status(httpStatus.CREATED).json(success(user));
     } catch (error) {
       next(error);
     }
@@ -62,8 +67,12 @@ class UserController {
       if (authorId !== userId) {
         return next(new HttpForbiddenException('No permission'));
       }
-      const result = await userModel.update(userId, req.body);
-      return res.status(httpStatus.OK).json(success(result));
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { hashedPassword, ...user } = await userModel.update(
+        userId,
+        req.body,
+      );
+      return res.status(httpStatus.OK).json(success(user));
     } catch (error) {
       next(error);
     }
