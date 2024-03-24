@@ -1,5 +1,7 @@
+CREATE TYPE order_status AS ENUM ('new', 'completed', 'canceled');
+
 CREATE TABLE orders (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),
-  status VARCHAR(24) NOT NULL
+  status order_status
 );

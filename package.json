@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.ts",
     "watch": "tsc-watch --onSuccess \"node ./dist/server.js\"",
-    "test": "jasmine-ts",
+    "test": "db-migrate --env test up jasmine-ts && db-migrate --env test reset",
     "build": "tsc",
     "migration": "db-migrate"
   },
