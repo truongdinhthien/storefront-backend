@@ -4,39 +4,85 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
+
+Prefix endpoints `/api`
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index `GET /products`
+- Show `GET /products/:productId`
+- Create [token required] `POST /products/:productId`
+- [NEW] Delete [token required] `DELETE /products/:productId`
+- [NEW] Update [token required] `PUT /products/:productId`
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required] `GET /users`
+- Show [token required] `GET /users/:userId`
+- Create `POST /users` (the create endpoint can be treated as register, so don't need token)
+- [NEW] Delete [token required] `DELETE /users/:userId`
+- [NEW] Update [token required] `PUT /users/:userId` (only author)
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required] `GET /orders?userId=`
+- [OPTIONAL] Completed Orders by user (args: completed status)[token required] `PUT /orders/:orderId/status` (the user id will be extracted from token)
+- [NEW] Create `POST /orders`
+
+#### [NEW] Auth
+- Get token (args: email and password) `POST /auth/login`
 
 ## Data Shapes
 #### Product
--  id
+- id
 - name
 - price
-- [OPTIONAL] category
+- popularity
+
+**Table**
+```
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price INTEGER NOT NULL,
+    popularity INTEGER DEFAULT 0.00
+);
+```
 
 #### User
 - id
+- email
 - firstName
 - lastName
-- password
+- ~~hashedPassword~~ (ignore sensitive API response)
+
+**Table**
+```
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(50) UNIQUE NOT NULL,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  hashed_password VARCHAR(255) NOT NULL
+);
+```
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+- status (active or completed or canceled)
+- products (join from product table and quantity)
+- user (join from user table)
+
+**Table**
+```
+CREATE TYPE order_status AS ENUM ('active', 'completed', 'canceled');
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  status order_status
+);
+
+CREATE TABLE order_items (
+  order_id INTEGER NOT NULL REFERENCES orders (id) ON DELETE CASCADE,
+  product_id INTEGER NOT NULL REFERENCES products (id) ON DELETE CASCADE,
+  quantity INTEGER NOT NULL
+);
+```
 
