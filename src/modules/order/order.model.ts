@@ -3,7 +3,7 @@ import { Product } from '../product/product.model';
 import { User, UserTable, transformUser } from '../user/user.model';
 
 export enum OrderStatus {
-  New = 'new',
+  Active = 'active',
   Completed = 'completed',
   Canceled = 'canceled',
 }
@@ -113,7 +113,7 @@ class OrderModel {
   }
 
   async create(data: CreateOrderInput): Promise<Order> {
-    const { status = OrderStatus.New, userId, products } = data;
+    const { status = OrderStatus.Active, userId, products } = data;
 
     const client = await db.instance.connect();
     try {

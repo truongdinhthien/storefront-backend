@@ -55,7 +55,7 @@ describe('Order model', () => {
         quantity: 5,
       })),
       user: createdUser,
-      status: OrderStatus.New,
+      status: OrderStatus.Active,
     };
   });
 
@@ -161,7 +161,7 @@ describe('Order endpoints', () => {
         quantity: 5,
       })),
       user: createdUser,
-      status: OrderStatus.New,
+      status: OrderStatus.Active,
     };
   });
 
