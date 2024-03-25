@@ -1,3 +1,3 @@
-DROP TYPE order_status;
-
 DROP TABLE orders;
+
+DROP TYPE order_status;

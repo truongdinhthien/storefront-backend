@@ -45,7 +45,7 @@ class UserController {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { hashedPassword, ...user } = await userModel.create(req.body);
-      return res.status(httpStatus.CREATED).json(success(user));
+      return res.status(httpStatus.OK).json(success(user));
     } catch (error) {
       next(error);
     }

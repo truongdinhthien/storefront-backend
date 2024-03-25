@@ -17,7 +17,9 @@ const app: express.Application = express();
 // Common Middleware
 app.use(bodyParser.json());
 app.use(cors());
-app.use(morgan('tiny'));
+if (CONFIG.NODE_ENV !== 'test') {
+  app.use(morgan('tiny'));
+}
 
 // App router
 const appRouter = Router();
@@ -37,3 +39,5 @@ const address: string = `0.0.0.0:${CONFIG.PORT}`;
 app.listen(CONFIG.PORT, function () {
   console.log(`Starting app on: ${address}`);
 });
+
+export default app;

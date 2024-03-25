@@ -1,5 +1,5 @@
 CREATE TABLE order_items (
-  order_id INTEGER NOT NULL REFERENCES orders (id),
-  product_id INTEGER NOT NULL REFERENCES products (id),
+  order_id INTEGER NOT NULL REFERENCES orders (id) ON DELETE CASCADE,
+  product_id INTEGER NOT NULL REFERENCES products (id) ON DELETE CASCADE,
   quantity INTEGER NOT NULL
 );

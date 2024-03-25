@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "node src/server.ts",
+    "start": "node dist/server.js",
     "watch": "tsc-watch --onSuccess \"node ./dist/server.js\"",
-    "test": "db-migrate --env test up jasmine-ts && db-migrate --env test reset",
+    "test": "db-migrate --env test up && set NODE_ENV=test && jasmine-ts && db-migrate --env test reset",
     "build": "tsc",
     "migration": "db-migrate"
   },
@@ -31,6 +31,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/morgan": "^1.9.9",
     "@types/pg": "^7.14.7",
+    "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "db-migrate": "^0.11.14",

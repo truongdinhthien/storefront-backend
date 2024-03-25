@@ -33,7 +33,7 @@ export interface UserCredentials {
 
 export const transformUser = (userTable: UserTable): User => {
   return {
-    id: userTable.id,
+    id: Number(userTable.id),
     email: userTable.email,
     firstName: userTable.first_name,
     lastName: userTable.last_name,
@@ -69,9 +69,7 @@ class UserModel {
       password,
       user.hashedPassword,
     );
-    if (!matchPassword) {
-      throw new HttpNotFoundException('Invalid email or password');
-    }
+    if (!matchPassword) return null;
 
     return user;
   }

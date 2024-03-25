@@ -69,7 +69,8 @@ export const transformGetOrderQuery = (data: GetOrderQueryResponse): Order => {
 };
 
 class OrderModel {
-  async getAll(): Promise<Order[]> {
+  async getAll(params: { userId?: number } = {}): Promise<Order[]> {
+    const { userId } = params;
     const result = await db.executeQuery<GetOrderQueryResponse>(
       ` SELECT orders.id, orders.status, TO_JSON(users) AS user,
           ARRAY_TO_JSON(ARRAY_AGG(
@@ -82,6 +83,7 @@ class OrderModel {
         INNER JOIN users ON orders.user_id = users.id
         INNER JOIN order_items ON orders.id = order_items.order_id
         INNER JOIN products ON order_items.product_id = products.id
+        ${userId ? `WHERE orders.user_id = ${userId}` : ''}
         GROUP BY orders.id, users
       `,
     );
@@ -89,7 +91,7 @@ class OrderModel {
   }
 
   async getById(id: number): Promise<Order | null> {
-    const result = await db.executeQuery<Order>(
+    const result = await db.executeQuery<GetOrderQueryResponse>(
       ` SELECT orders.id, orders.status, TO_JSON(users) AS user,
           ARRAY_TO_JSON(ARRAY_AGG(
             json_build_object(
@@ -107,7 +109,7 @@ class OrderModel {
       [id],
     );
     if (!result.length) return null;
-    return result[0];
+    return transformGetOrderQuery(result[0]);
   }
 
   async create(data: CreateOrderInput): Promise<Order> {
@@ -129,8 +131,8 @@ class OrderModel {
           );
         }),
       );
-      const order = (await this.getById(orderId))!;
       await client.query('COMMIT');
+      const order = (await this.getById(orderId))!;
       return order;
     } catch (e) {
       await client.query('ROLLBACK');

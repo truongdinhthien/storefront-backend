@@ -6,9 +6,9 @@ const userRouter = Router();
 const userController = new UserController();
 
 userRouter.get('/users', verifyAuth, userController.getUser);
-userRouter.get('/users/:userId', userController.getUserById);
+userRouter.get('/users/:userId', verifyAuth, userController.getUserById);
 userRouter.post('/users', userController.createUser);
-userRouter.delete('/users/:userId', userController.deleteUser);
+userRouter.delete('/users/:userId', verifyAuth, userController.deleteUser);
 userRouter.put('/users/:userId', verifyAuth, userController.updateUser);
 
 userRouter.param('userId', loadUser);

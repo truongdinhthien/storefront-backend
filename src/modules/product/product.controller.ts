@@ -37,7 +37,7 @@ class ProductController {
   async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await productModel.create(req.body);
-      return res.status(httpStatus.CREATED).json(success(result));
+      return res.status(httpStatus.OK).json(success(result));
     } catch (error) {
       next(error);
     }
