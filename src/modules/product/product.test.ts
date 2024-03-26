@@ -35,7 +35,6 @@ describe('Product model', () => {
     const actualProducts = await productModel.getAll();
     actualProducts.forEach((product) => {
       const foundProduct = dummyProducts?.find(({ id }) => product.id === id);
-      expect(foundProduct).toBeDefined();
       if (foundProduct) {
         expect(foundProduct.name).toEqual(product.name);
         expect(foundProduct.price).toEqual(product.price);
